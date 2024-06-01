@@ -1,5 +1,6 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from 'react-dom/client';
+
 import "jquery";
 import "popper.js/dist/umd/popper";
 import "bootstrap/dist/js/bootstrap";
@@ -7,4 +8,4 @@ import "bootstrap/dist/css/bootstrap.css";
 
 import { AppComponent } from './App';
 
-ReactDOM.render(<AppComponent />, document.getElementById('root'));
+createRoot(document.getElementById('root')).render(<AppComponent />)
