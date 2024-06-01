@@ -1,45 +1,61 @@
 import { Component } from "react";
 import { CustomerInfo } from "./customerInfo";
+import { useNavigate } from "react-router-dom";
 
-export class CustomerList extends Component {
+class CustomerList extends Component {
 
     state = {
-        customers: [
-            { id: 51, name: 'Alpha', price: 10, quantity: 2 },
-            { id: 52, name: 'Beta', price: 10, quantity: 2 },
-            { id: 53, name: 'Gama', price: 10, quantity: 2 },
-        ]
+        customers: []
     }
 
     render() {
         return (
             <div className="row" style={{ gap: '2rem', margin: '2rem' }}>
                 {this.state.customers.map((item, ind) =>
-                    <div className="col-lg-5 p-0" key={item.id + '_' + ind}>
+                    <div className="col-lg-5 p-0" key={item.id}>
                         <CustomerInfo info={item} onItemCopy={this.onItemCopy} onItemDelete={() => this.onItemDelete(ind)}>
-                            <button className="btn btn-info btn-sm" onClick={() => this.onBtnClick(item, 'info')}>Info</button>
-                            <button className="btn btn-primary btn-sm ml-2" onClick={() => this.onBtnClick(item, 'save')}>Save</button>
+                            <button className="btn btn-info btn-sm" onClick={() => this.onBtnClick(item)}>Info</button>
                         </CustomerInfo>
                     </div>)}
             </div>
         )
     }
 
-    onBtnClick = (item, action) => {
-        alert('action is ' + action + ' and item is ' + JSON.stringify(item));
+    componentDidMount() {
+        this.getCustomersList();
+    }
+
+    onBtnClick = (item) => {
+        const { navigate } = this.props;
+        navigate('/customer-wiki/' + item.name);
     }
 
     onItemCopy = (item, action = '') => {
-        console.log('action :', action);
         const custArray = [...this.state.customers];
-        custArray.push(item);
+        const copyItem = JSON.parse(JSON.stringify(item));
+        copyItem.id = Math.random();
+        custArray.push(copyItem);
         this.setState({ customers: custArray });
     }
 
     onItemDelete = (ind) => {
-        console.log('ind :', ind);
         const custArray = [...this.state.customers];
         custArray.splice(ind, 1)
         this.setState({ customers: custArray });
     }
+
+    getCustomersList() {
+        fetch('http://localhost:3000/customers').then(re => re.json()).then(customers => {
+            this.setState({ customers })
+        })
+    }
 }
+
+function withNavigation(Component) {
+    return function WrappedComponent(props) {
+        const navigate = useNavigate();
+        return <Component {...props} navigate={navigate} />;
+    };
+}
+
+export default withNavigation(CustomerList);
