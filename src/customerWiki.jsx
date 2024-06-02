@@ -10,6 +10,10 @@ class CustomerWiki extends Component {
             name: this.props.routeParams.name,
         }
     }
+
+    componentDidMount() {
+        console.log('props :', this.props.match);
+    }
     render() {
         return (
             <React.Fragment>

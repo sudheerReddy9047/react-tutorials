@@ -40,12 +40,13 @@ class LoginComponent extends Component {
     }
 
     onLoginClick = async () => {
+        const { navigate } = this.props;
         fetch('http://localhost:3000/customers?email=' + this.state.email + '&id=' + this.state.password).then(r => r.json()).then(r => {
             if (r.length) {
                 this.setState({
                     message: <span className="text-success">Login success</span>
                 });
-
+                navigate('/customers');
                 this.props.onLoginSuccess();
             } else {
                 this.setState({
