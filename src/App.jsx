@@ -10,6 +10,7 @@ import CustomerList from './customerList';
 import CustomerWiki from "./customerWiki";
 import { PageNotFound } from "./pageNotFound";
 import Sidebar from "./sidebar/sidebar";
+import Register from "./register";
 
 export class AppComponent extends Component {
 
@@ -25,6 +26,7 @@ export class AppComponent extends Component {
                                 <Route path="/" element={<LoginComponent onLoginSuccess={this.onLoginSuccess}></LoginComponent>} />
                                 <Route path="/customers" element={<CustomerList></CustomerList>} />
                                 <Route path="/customer-wiki/:name" element={<CustomerWiki />} />
+                                <Route path="/register" element={<Register></Register>} />
                                 <Route path="*" element={<PageNotFound></PageNotFound>} />
                             </Routes>
                         </div>
